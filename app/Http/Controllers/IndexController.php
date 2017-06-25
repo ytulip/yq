@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Account;
 use App\Model\LotteryConfig;
 use App\Model\User;
+use App\Util\QrCodeCreater;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -75,7 +76,46 @@ class IndexController extends Controller
      */
     public function wechatPayBack()
     {
+        //计算提成
+        
+    }
 
+    public function myFriend()
+    {
+        $userId = Request::input('id');
+
+        $openId = '';
+        $user = User::where(['openid'=>$openId])->first();
+        if($user){
+            dd('用户已注册');
+        }
+
+        $referrer = new User($userId);
+        if(!$referrer) {
+            dd('无效链接！');
+        }
+
+        $newUser = new User();
+        $newUser->openid = $openId;
+        $newUser->parent_id = $referrer->id;
+        $newUser->save();
+        return view('callfriendsuccess');
+    }
+
+    public function callFriend()
+    {
+        $userId = Auth::id();
+        $path = env('HOST') . "/myfriend?id=" . $userId;
+        $qrcode = QrCodeCreater::getQrCode([
+            'format' => 'png',
+            'issave' => false,
+            'text' => $path,
+            'tolerancelevel'=>'M'
+        ]);
+        //输出图片
+        $data = [];
+        $data['qrcode'] = "data:image/jpg;base64," . chunk_split(base64_encode($qrcode['data']));
+        return view('friend',$data);
     }
 
     private function getRand($proArr) {

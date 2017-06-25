@@ -18,3 +18,4 @@ Route::get('/', function () {
 Route::get('/activity','IndexController@showLottery');
 Route::post('/activity-do','IndexController@doLottery');
 Route::get('/login','IndexController@login');
+Route::get('/call-friend','IndexController@callFriend');
