@@ -118,6 +118,24 @@ class IndexController extends Controller
         return view('friend',$data);
     }
 
+    public function charge()
+    {
+        return view('charge');
+    }
+
+    public function center()
+    {
+        return view('center');
+    }
+
+    public function group()
+    {
+        $parent = DB::table('users')->where('parent_id',Auth::id())->get();
+        $indirect = DB::table('users')->where('indirect_id',Auth::id())->get();
+        $further = DB::table('users')->where('further_id',Auth::id())->get();
+        return view('group',['parent'=>$parent,'indirect'=>$indirect,'further'=>$further]);
+    }
+
     private function getRand($proArr) {
         $result = '';
 

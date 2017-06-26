@@ -1,5 +1,5 @@
 html,body{width: 100%;height: 100%;}
-.container{width: 100%;height: 100%;}
+.container{width: 100%;height: 100%;overflow: hidden;}
 .lottery-wrap{padding-top: 44px;}
 .lottery-panel{width: 100%;margin: 0 auto}
 .g-lottery-box {
@@ -14,7 +14,7 @@ html,body{width: 100%;height: 100%;}
     width: 340px;
     height: 340px;
     position: relative;
-    background: url(/img/bg-lottery1.png) no-repeat;
+    background: url(/img/lottery0.png) no-repeat;
     left: 30px;
     top: 30px;
 }
@@ -26,4 +26,8 @@ html,body{width: 100%;height: 100%;}
     top: 77px;
     left: 77px;
     background: url(/img/playbtn.png) no-repeat;
+}
+
+.weui-tabbar__item {
+    padding: 12px 0;
 }

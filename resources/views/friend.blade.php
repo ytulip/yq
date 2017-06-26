@@ -7,7 +7,9 @@
 <title></title>
 <body>
 <div style="display: table;width: 100%;height: 100%;">
-    <img style="display: table-cell;vertical-align: middle;" src="{{$qrcode}}"/>
+    <div style="text-align: center;display: table-cell;vertical-align: middle;">
+    <img  src="{{$qrcode}}"/>
+    </div>
 </div>
 </body>
 </html>

@@ -19,3 +19,6 @@ Route::get('/activity','IndexController@showLottery');
 Route::post('/activity-do','IndexController@doLottery');
 Route::get('/login','IndexController@login');
 Route::get('/call-friend','IndexController@callFriend');
+Route::get('/charge','IndexController@charge');
+Route::get('/center','IndexController@center');
+Route::get('/group','IndexController@group');

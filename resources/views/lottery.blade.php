@@ -11,7 +11,7 @@
         <div class="weui-navbar__item weui-bar__item_on">
            <span>id:{{\Illuminate\Support\Facades\Auth::id()}}</span>
             余额:<span id="user-charge">{{\Illuminate\Support\Facades\Auth::user()->charge}}</span>
-            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn">充值</a>
+            <a href="/charge" class="weui-btn weui-btn_mini weui-btn_warn">充值</a>
         </div>
     </div>
     <div class="lottery-wrap">
@@ -26,17 +26,7 @@
             @endforeach
         </div>
     </div>
-    <div class="weui-tabbar">
-        <a href="javascript:;" class="weui-tabbar__item">
-            <p class="weui-tabbar__label">活动专区</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <p class="weui-tabbar__label">我要推广</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <p class="weui-tabbar__label">个人中心</p>
-        </a>
-    </div>
+    @include('tabbar')
 </div>
 </body>
 <script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -52,13 +42,14 @@
     var lotteryRequestStatus = 0;//0请求完成，1请求中
     {{--var lotteryConfig = {{}};--}}
 
-    function changeLottery($key) {
+    function changeLottery(key) {
         if(lotteryRequestStatus)
         {
             return;
         }
         //换背景
-        currentLotteryIndex = $key;
+        currentLotteryIndex = key;
+        $('.g-lottery-img').css("background","url(/img/lottery"+key+".png) no-repeat");
     }
 
     $(function() {
