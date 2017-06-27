@@ -10,4 +10,19 @@ class Kits{
         $second2 = strtotime($dateStr);
         return ($second1 - $second2) / 86400;
     }
+
+    /**
+     * 微信的钱是以分为单位的，实际在系统中的钱是以元为单位的，返回一个整数
+     * @param $fee
+     * @return float
+     */
+    static public function wxFee($fee){
+        $flag = env('WECHAT_PAY_TEST',false);
+        if($flag){
+            return 1;
+        }else{
+            $fee = $fee * 100;
+            return round($fee);
+        }
+    }
 }

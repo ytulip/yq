@@ -227,6 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'WechatCallback' => App\Facades\WechatCallbackFacade::class,
+        'Logger'      => App\Log\Facades\Logger::class
 
     ],
 

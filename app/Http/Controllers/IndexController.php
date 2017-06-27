@@ -2,18 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\WechatCallbackFacade;
 use App\Model\Account;
+use App\Model\Charge;
 use App\Model\LotteryConfig;
 use App\Model\User;
 use App\Util\QrCodeCreater;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Ytulip\Ycurl\Kits;
 
 class IndexController extends Controller
 {
     public function showLottery()
     {
+        if(!Auth::check()) {
+            $openid = WechatCallbackFacade::getOpenidInThisUrlDealWithError(function () {
+                App::abort('404');
+            });
+            //如果没有用户则创建用户
+            $user = User::where('openid',$openid)->first();
+            if(!$user) {
+                $user = new User();
+                $user->openid = $openid;
+                $user->save();
+            }
+            Auth::loginUsingId($user->id);
+        }
+
+
         return view('lottery');
     }
 
@@ -134,6 +154,56 @@ class IndexController extends Controller
         $indirect = DB::table('users')->where('indirect_id',Auth::id())->get();
         $further = DB::table('users')->where('further_id',Auth::id())->get();
         return view('group',['parent'=>$parent,'indirect'=>$indirect,'further'=>$further]);
+    }
+
+    public function makeBill()
+    {
+        $pirce = intval(Request::input('price'));
+        if(!in_array($pirce,[5,10,50,100])){
+            dd('无效金额');
+        }
+
+        if(!Auth::check()) {
+            dd('登录信息丢失');
+        }
+        $charge = new Charge();
+        $charge->user_id = Auth::id();
+        $charge->price = $pirce;
+        $charge->save();
+        return Redirect::to('/pay?trade_no=' . $charge->id);
+    }
+
+    public function pay()
+    {
+        $tradeNo = Request::get('trade_no');
+        $charge = Charge::find($tradeNo);
+        if($charge->status)
+        {
+            dd('请勿重复支付');
+        }
+
+        $openId = Auth::user()->openid;
+        if($openId){
+            require_once base_path() . "/plugin/wechatpay/lib/WxPay.Api.php";
+            require_once base_path() . "/plugin/wechatpay/example/WxPay.JsApiPay.php";
+            $tools = new \JsApiPay();
+            //②、统一下单
+            $input = new \WxPayUnifiedOrder();
+            $input->SetBody("test");
+            $input->SetAttach("test");
+            $input->SetOut_trade_no($tradeNo);//这个订单号是特殊的
+            $input->SetTotal_fee(Kits::wxFee($charge->price)); //钱是以分计的
+            $input->SetTime_start(date("YmdHis"));
+            $input->SetGoods_tag("test");
+            $input->SetNotify_url("http://120.25.216.9:8080/shopping/order/paymentresult/manage/addByWX.action");
+            $input->SetTrade_type("JSAPI");
+            $input->SetOpenid($openId);
+            $order = \WxPayApi::unifiedOrder($input);
+            $jsApiParameters = $tools->GetJsApiParameters($order);
+        }else{
+            $jsApiParameters = '{}';
+        }
+        return view('pay')->with('jsApiParameters',$jsApiParameters);
     }
 
     private function getRand($proArr) {

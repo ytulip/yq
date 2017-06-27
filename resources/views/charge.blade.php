@@ -12,7 +12,7 @@
 <div class="container" style="padding: 6px;background-color: #eeeeee;box-sizing: border-box;">
     <div class="charge-show">
         <p>账户余额</p>
-        <p>￥<span>30.00</span>元</p>
+        <p>￥<span>{{\Illuminate\Support\Facades\Auth::user()->charge}}</span>元</p>
     </div>
 
     <div>

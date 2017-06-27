@@ -5,13 +5,19 @@
 <link rel="stylesheet" href="/css/weui.css?v={{env('VERSION')}}"/>
 <link rel="stylesheet" href="/css/style.css?v={{env('VERSION')}}"/>
 <title></title>
+<style>
+    .weui-navbar__item.weui-bar__item_on{background-color: #37b3d9;padding: 0;}
+    .lottery_disable{background-color: #9ED99D !important;}
+</style>
 <body>
 <div class="container">
     <div class="weui-navbar" style="height: 44px;">
         <div class="weui-navbar__item weui-bar__item_on">
-           <span>id:{{\Illuminate\Support\Facades\Auth::id()}}</span>
+           <p style="line-height: 44px;color: #ffffff;"><span>id:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::id()}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             余额:<span id="user-charge">{{\Illuminate\Support\Facades\Auth::user()->charge}}</span>
-            <a href="/charge" class="weui-btn weui-btn_mini weui-btn_warn">充值</a>
+
+            <a  style="vertical-align: middle;margin-left: 60px;" href="/charge" class="weui-btn weui-btn_mini weui-btn_warn">充值</a>
+            </p>
         </div>
     </div>
     <div class="lottery-wrap">
@@ -20,9 +26,9 @@
                 <a class="playbtn" href="javascript:;" title="开始抽奖"></a>
             </div>
         </div>
-        <div class="" style="text-align: center;">
+        <div class="" style="text-align: center;" id="lottery-level">
         @foreach(\Illuminate\Support\Facades\DB::table('lottery_config')->select(['id','remark'])->get() as $key=>$item)
-            <a href="javascript:changeLottery({{$key}});"  class="weui-btn weui-btn_mini weui-btn_primary">{{$item->remark}}</a>
+            <a href="javascript:changeLottery({{$key}});"  class="weui-btn weui-btn_mini weui-btn_primary @if($key==0) lottery_disable @endif">{{$item->remark}}</a>
             @endforeach
         </div>
     </div>
@@ -43,13 +49,18 @@
     {{--var lotteryConfig = {{}};--}}
 
     function changeLottery(key) {
-        if(lotteryRequestStatus)
+        if(lotteryRequestStatus || (key == currentLotteryIndex))
         {
             return;
         }
         //换背景
         currentLotteryIndex = key;
-        $('.g-lottery-img').css("background","url(/img/lottery"+key+".png) no-repeat");
+        $('.lottery_disable').removeClass('lottery_disable');
+        $('#lottery-level a:nth-child('+ (key + 1) + ')').addClass('lottery_disable');
+        $('.g-lottery-img').css({
+            "background":"url(/img/lottery"+key+".png) no-repeat",
+            "backgroundSize":"255px 255px"
+        });
     }
 
     $(function() {

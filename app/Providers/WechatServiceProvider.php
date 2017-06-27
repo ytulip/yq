@@ -13,7 +13,7 @@ class WechatServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('WechatCallback',function(){
-            return new \Ytulip\Ycurl\WechatCallback(config('sb.wechat'),new MyWechatResponse());
+            return new \Ytulip\Ycurl\WechatCallback(config('customer.wechat'),new MyWechatResponse());
         });
     }
 

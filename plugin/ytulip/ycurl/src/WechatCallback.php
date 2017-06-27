@@ -60,26 +60,6 @@ class WechatCallback{
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' . $this->getAccessToken();
         $data = '{
           "button":[
-            {
-                "name":"我要点餐",
-                "type":"view",
-                "url":"http://sbii.cn/m/index"
-            },
-            {
-                "name":"领取优惠卷",
-                "sub_button":[
-                    {
-                        "name":"领取优惠卷",
-                        "type":"view",
-                        "url":"http://sbii.cn/m/index/coupon-get"
-                    },
-                    {
-                        "name":"关于我们",
-                        "type":"view",
-                        "url":"http://sbii.cn/about/us"
-                    }
-                ]
-            }
           ]
         }';
         return self::curl_post($url,$data);
@@ -87,6 +67,31 @@ class WechatCallback{
 
     public function getAppId(){
         return $this->_appid;
+    }
+
+
+    /**
+     * 在当前页面获得用户的openid
+     */
+    public function getOpenidInThisUrlDealWithError($errorCallback){
+        //通过code获得openid
+        if (!isset($_GET['code'])){
+            //触发微信返回code码
+            $baseUrl = urlencode($_SERVER['REQUEST_SCHEME'] . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+            $url = $this->__CreateOauthUrlForCode($baseUrl);
+            Header("Location: $url");
+            exit();
+        } else {
+            //获取code码，以获取openid
+            $code = $_GET['code'];
+            $info = $this->getAuth2Info($code);
+            if(isset($info['errcode'])){
+                if($info['errcode'] == 40029)
+                    $errorCallback();
+            }
+            $openid = $info['openid'];
+            return $openid;
+        }
     }
 
 
