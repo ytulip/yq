@@ -14,7 +14,7 @@
 <div class="container" style="background-color: #eeeeee">
     <div class="weui-tab">
         <p style="line-height: 36px;background-color:#37b3d9;color:#ffffff;padding-left: 26px;font-size: 14px; ">
-            ID:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::id()}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上级:&nbsp;&nbsp;{{(\Illuminate\Support\Facades\Auth::user())->parent_id}}
+            ID:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::id()}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上级:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::user()->parent_id}}
         </p>
         <div class="weui-navbar" style="margin-top: 36px;">
             <div class="weui-navbar__item">
