@@ -28,6 +28,7 @@ class IndexController extends Controller
             if(!$user) {
                 $user = new User();
                 $user->openid = $openid;
+                $user->name = $openid;
                 $user->save();
             }
             Auth::loginUsingId($user->id);
