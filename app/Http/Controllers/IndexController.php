@@ -42,6 +42,7 @@ class IndexController extends Controller
         $rules = [
             'lottery_id'=>'required|exists:lottery_config,id'
         ];
+        $currentDatetime = date('Y-m-d H:i:s');
         $this->validate(Request::all(),$rules);
         $lotteryId = Request::input('lottery_id');
 
@@ -74,8 +75,8 @@ class IndexController extends Controller
         $user->increment('charge',$bingo->price);
 
         Account::insert([
-            ['cash'=>$lottery->cost,'user_id'=>Auth::id(),'type'=>2,'category'=>3],
-            ['cash'=>$bingo->price,'user_id'=>Auth::id(),'type'=>1,'category'=>4],
+            ['cash'=>$lottery->cost,'user_id'=>Auth::id(),'type'=>2,'category'=>3,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime],
+            ['cash'=>$bingo->price,'user_id'=>Auth::id(),'type'=>1,'category'=>4,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime],
         ]);
 
         return json_encode(['status'=>true,'data'=>['charge'=>User::find(Auth::id())->charge,'bingo'=>$cursor,'bingo_cash'=>$bingo->price]]);
@@ -96,15 +97,58 @@ class IndexController extends Controller
      */
     public function wechatPayBack()
     {
+
+        $currentDatetime = date('Y-m-d H:i:s');
         //计算提成
-        
+        $tradeNo = Request::input('trade_no');
+        $charge = Charge::find($tradeNo);
+        if($charge && $charge->status == 1)
+        {
+            return;
+        }
+
+        $charge->status = 1;
+        $charge->save();
+        $user = User::find($charge->user_id);
+        $user->increment('charge',$charge->price);
+        $accountArr[] = ['cash'=>$charge->price,'user_id'=>Auth::id(),'type'=>1,'category'=>1,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];;
+        if($user->parent_id)
+        {
+            $parent = User::find($user->parent_id);
+            $parent->increment('charge',$charge->price * 0.1);
+            $parent->increment('extract',$charge->price * 0.1);
+            $accountArr[] =  ['cash'=>$charge->price * 0.1,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+        }
+
+        if($user->indrect_id)
+        {
+            $parent = User::find($user->indrect_id);
+            $parent->increment('charge',$charge->price * 0.02);
+            $parent->increment('extract',$charge->price * 0.02);
+            $accountArr[] =  ['cash'=>$charge->price * 0.02,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+        }
+
+        if($user->further_id)
+        {
+            $parent = User::find($user->further_id);
+            $parent->increment('charge',$charge->price * 0.004);
+            $parent->increment('extract',$charge->price * 0.004);
+            $accountArr[] =  ['cash'=>$charge->price * 0.004,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+        }
+
+        if($accountArr)
+        {
+            Account::insert($accountArr);
+        }
     }
 
     public function myFriend()
     {
         $userId = Request::input('id');
 
-        $openId = '';
+        $openId = WechatCallbackFacade::getOpenidInThisUrlDealWithError(function(){
+            dd('无法获得用户信息！');
+        });
         $user = User::where(['openid'=>$openId])->first();
         if($user){
             dd('用户已注册');
@@ -118,6 +162,8 @@ class IndexController extends Controller
         $newUser = new User();
         $newUser->openid = $openId;
         $newUser->parent_id = $referrer->id;
+        $newUser->indirect_id = $referrer->parent_id;
+        $newUser->further_id = $referrer->indirect_id;
         $newUser->save();
         return view('callfriendsuccess');
     }
@@ -125,7 +171,7 @@ class IndexController extends Controller
     public function callFriend()
     {
         $userId = Auth::id();
-        $path = env('HOST') . "/myfriend?id=" . $userId;
+        $path = $_SERVER['REQUEST_SCHEME'] . '://'.$_SERVER['HTTP_HOST'] . "/myfriend?id=" . $userId;
         $qrcode = QrCodeCreater::getQrCode([
             'format' => 'png',
             'issave' => false,
