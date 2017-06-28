@@ -24,3 +24,5 @@ Route::get('/center','IndexController@center');
 Route::get('/group','IndexController@group');
 Route::get('/makebill','IndexController@makebill');
 Route::get('/pay','IndexController@pay');
+Route::get('/info','IndexController@userInfo');
+Route::post('/card-do','IndexController@doCard');

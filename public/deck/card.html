@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>卡牌游戏</title>
+    <link href="css/example.css" rel="stylesheet">
+    <link href="css/ns-style-other.css" rel="stylesheet">
+    <link href="css/deck.css?family=Open+Sans:400,300,600|Ubuntu+Condensed" rel="stylesheet" type="text/css">
+    <link href="css/cs-select.css" rel="stylesheet">
+    <link href="css/cs-skin-boxes.css" rel="stylesheet">
+    <link href="faces/back.png" rel="prefetch">
+    <link href="faces/0_1.svg" rel="prefetch">
+    <link href="faces/0_2.svg" rel="prefetch">
+    <link href="faces/0_3.svg" rel="prefetch">
+    <link href="faces/0_4.svg" rel="prefetch">
+    <link href="faces/0_5.svg" rel="prefetch">
+</head>
+<body>
+<div id="container"></div>
+<div class="ns-effect-thumbslider ns-show" id="app">
+    <div class="ns-thumb"><img id="photoImg" width="60" height="60" style="margin: 2px; border: 1px solid #ccc; border-radius: 4px;" src="css/user.png"></div>
+    <div class="ns-content">
+        <div>{{name}}</div>
+        <div style="font-size: 12px; padding-top: 5px;">金钱：￥{{balance}}</div>
+    </div>
+</div>
+<div id="toolbar"></div>
+<div class="md-modal md-effect-14" id="modal">
+    <div class="md-content">
+        <h3 id="selectTitle">投注</h3>
+        <div>
+            <p id="selectCardDiv">
+                <span>张数：</span>
+                <span class="btn">1</span>
+                <span class="btn">2</span>
+                <span class="btn">3</span>
+            </p>
+            <p id="selectMoneyDiv">
+                <span>金额：</span>
+                <label class="btn">10</label>
+                <label class="btn">20</label>
+                <label class="btn">50</label>
+                <label class="btn">100</label>
+                <section style="padding-left: 53px; padding-right: 45px;">
+                    <select id="otherSelect" class="cs-select cs-skin-boxes">
+                        <option value="" disabled selected>10 - 100 自选</option>
+                        <option value="10" data-class="color-588c75">10</option>
+                        <option value="20" data-class="color-b0c47f">20</option>
+                        <option value="30" data-class="color-f3e395">30</option>
+                        <option value="40" data-class="color-f3ae73">40</option>
+                        <option value="50" data-class="color-da645a">50</option>
+                        <option value="60" data-class="color-79a38f">60</option>
+                        <option value="70" data-class="color-c1d099">70</option>
+                        <option value="80" data-class="color-f5eaaa">80</option>
+                        <option value="90" data-class="color-f5be8f">90</option>
+                        <option value="100" data-class="color-e1837b">100</option>
+                    </select>
+                </section>
+            </p>
+            <button onclick="startGame();" class="md-close" style="margin-top: 10px;">下注</button>
+        </div>
+    </div>
+</div>
+<div class="md-modal md-effect-14" id="modal2">
+    <div class="md-content">
+        <h3 id="selectTitle2">提示</h3>
+        <div>
+            <p id="contentDiv"></p>
+            <button onclick="restart();" class="md-close" style="margin-top: 10px;">确定</button>
+        </div>
+    </div>
+</div>
+<div class="md-overlay" id="md-overlay"></div>
+<div class="preLoad" id="preLoad">
+    加载中，请稍后...
+</div>
+<div class="copyright">copyright 2017</div>
+<script src="js/deck.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/zepto.min.js"></script>
+<script src="js/classie.js"></script>
+<script src="js/selectFx.min.js"></script>
+<script src="js/card.min.js"></script>
+<script src="js/interface.js"></script>
+</body>
+</html>

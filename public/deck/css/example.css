@@ -1,0 +1,626 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    background-color: #45a176;
+    color: #333;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+#container {
+    position: absolute;
+    top: calc(50% + 1.5rem);
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    -o-transform: translate3d(-50%, -50%, 0);
+    -ms-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
+#toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #265941;
+    padding: 0.25rem;
+    text-align: center;
+}
+#toolbar button {
+    background: none;
+    border: 1px solid #fff;
+    outline: none;
+    margin: 0.25rem;
+    padding: 0.5rem;
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1;
+    color: #fff;
+    cursor: pointer;
+}
+#toolbar button:not([disabled]):hover {
+    background-color: #fff;
+    color: #444;
+}
+#toolbar button[disabled] {
+    background: none;
+    color: #ccc;
+}
+.message {
+    position: fixed;
+    top: 4.5rem;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    font-size: 0.5rem;
+    text-align: center;
+}
+.tip {
+    position: fixed;
+    bottom: 4.5rem;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    font-size: 1.0rem;
+    text-align: center;
+    color: #fff;
+}
+.copyright {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    font-size: 0.5rem;
+    text-align: center;
+}
+.card {
+    position: absolute;
+    display: inline-block;
+    left: -1.9375rem;
+    top: -4.75rem;
+    width: 3.875rem;
+    height: 5.5rem;
+    background-color: #fff;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    cursor: default;
+}
+.card .topleft,
+.card .bottomright {
+    position: absolute;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1;
+    letter-spacing: -0.1rem;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    white-space: pre;
+}
+.card .topleft {
+    top: 0.25rem;
+    left: 0.25rem;
+    -webkit-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
+.card .bottomright {
+    bottom: 0.25rem;
+    right: 0.25rem;
+    -webkit-transform: rotate(180deg) translate(-50%, 0);
+    -moz-transform: rotate(180deg) translate(-50%, 0);
+    -o-transform: rotate(180deg) translate(-50%, 0);
+    -ms-transform: rotate(180deg) translate(-50%, 0);
+    transform: rotate(180deg) translate(-50%, 0);
+}
+.card .face {
+    height: 100%;
+    background-position: 50% 50%;
+    -webkit-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.card.joker .topleft,
+.card.joker .bottomright {
+    font-size: 0.4rem;
+}
+.card.spades,
+.card.clubs,
+.card.joker {
+    color: #000;
+}
+.card.hearts,
+.card.diamonds {
+    color: #f00;
+}
+.card.back .face {
+    background-image: url("../faces/back.png");
+}
+.card.spades1 .face {
+    background-image: url("../faces/0_1.svg");
+}
+.card.spades2 .face {
+    background-image: url("../faces/0_2.svg");
+}
+.card.spades3 .face {
+    background-image: url("../faces/0_3.svg");
+}
+.card.spades4 .face {
+    background-image: url("../faces/0_4.svg");
+}
+.card.spades5 .face {
+    background-image: url("../faces/0_5.svg");
+}
+.card.spades6 .face {
+    background-image: url("faces/0_6.svg");
+}
+.card.spades7 .face {
+    background-image: url("faces/0_7.svg");
+}
+.card.spades8 .face {
+    background-image: url("faces/0_8.svg");
+}
+.card.spades9 .face {
+    background-image: url("faces/0_9.svg");
+}
+.card.spades10 .face {
+    background-image: url("faces/0_10.svg");
+}
+.card.spades11 .face {
+    background-image: url("faces/0_11.svg");
+}
+.card.spades12 .face {
+    background-image: url("faces/0_12.svg");
+}
+.card.spades13 .face {
+    background-image: url("faces/0_13.svg");
+}
+.card.hearts1 .face {
+    background-image: url("faces/1_1.svg");
+}
+.card.hearts2 .face {
+    background-image: url("faces/1_2.svg");
+}
+.card.hearts3 .face {
+    background-image: url("faces/1_3.svg");
+}
+.card.hearts4 .face {
+    background-image: url("faces/1_4.svg");
+}
+.card.hearts5 .face {
+    background-image: url("faces/1_5.svg");
+}
+.card.hearts6 .face {
+    background-image: url("faces/1_6.svg");
+}
+.card.hearts7 .face {
+    background-image: url("faces/1_7.svg");
+}
+.card.hearts8 .face {
+    background-image: url("faces/1_8.svg");
+}
+.card.hearts9 .face {
+    background-image: url("faces/1_9.svg");
+}
+.card.hearts10 .face {
+    background-image: url("faces/1_10.svg");
+}
+.card.hearts11 .face {
+    background-image: url("faces/1_11.svg");
+}
+.card.hearts12 .face {
+    background-image: url("faces/1_12.svg");
+}
+.card.hearts13 .face {
+    background-image: url("faces/1_13.svg");
+}
+.card.clubs1 .face {
+    background-image: url("faces/2_1.svg");
+}
+.card.clubs2 .face {
+    background-image: url("faces/2_2.svg");
+}
+.card.clubs3 .face {
+    background-image: url("faces/2_3.svg");
+}
+.card.clubs4 .face {
+    background-image: url("faces/2_4.svg");
+}
+.card.clubs5 .face {
+    background-image: url("faces/2_5.svg");
+}
+.card.clubs6 .face {
+    background-image: url("faces/2_6.svg");
+}
+.card.clubs7 .face {
+    background-image: url("faces/2_7.svg");
+}
+.card.clubs8 .face {
+    background-image: url("faces/2_8.svg");
+}
+.card.clubs9 .face {
+    background-image: url("faces/2_9.svg");
+}
+.card.clubs10 .face {
+    background-image: url("faces/2_10.svg");
+}
+.card.clubs11 .face {
+    background-image: url("faces/2_11.svg");
+}
+.card.clubs12 .face {
+    background-image: url("faces/2_12.svg");
+}
+.card.clubs13 .face {
+    background-image: url("faces/2_13.svg");
+}
+.card.diamonds1 .face {
+    background-image: url("faces/3_1.svg");
+}
+.card.diamonds2 .face {
+    background-image: url("faces/3_2.svg");
+}
+.card.diamonds3 .face {
+    background-image: url("faces/3_3.svg");
+}
+.card.diamonds4 .face {
+    background-image: url("faces/3_4.svg");
+}
+.card.diamonds5 .face {
+    background-image: url("faces/3_5.svg");
+}
+.card.diamonds6 .face {
+    background-image: url("faces/3_6.svg");
+}
+.card.diamonds7 .face {
+    background-image: url("faces/3_7.svg");
+}
+.card.diamonds8 .face {
+    background-image: url("faces/3_8.svg");
+}
+.card.diamonds9 .face {
+    background-image: url("faces/3_9.svg");
+}
+.card.diamonds10 .face {
+    background-image: url("faces/3_10.svg");
+}
+.card.diamonds11 .face {
+    background-image: url("faces/3_11.svg");
+}
+.card.diamonds12 .face {
+    background-image: url("faces/3_12.svg");
+}
+.card.diamonds13 .face {
+    background-image: url("faces/3_13.svg");
+}
+.card.joker1 .face {
+    background-image: url("faces/4_1.svg");
+}
+.card.joker2 .face {
+    background-image: url("faces/4_2.svg");
+}
+.card.joker3 .face {
+    background-image: url("faces/4_3.svg");
+}
+@media (max-width: 540px) {
+    #toolbar {
+        /*text-align: left;*/
+    }
+    .gh-ribbon {
+        -webkit-transform: scale(0.5);
+        -moz-transform: scale(0.5);
+        -o-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 100% 0;
+        -moz-transform-origin: 100% 0;
+        -o-transform-origin: 100% 0;
+        -ms-transform-origin: 100% 0;
+        transform-origin: 100% 0;
+    }
+}
+@media (min-width: 640px) {
+    html {
+        font-size: 125%;
+    }
+}
+.md-perspective,
+.md-perspective body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.md-perspective body  {
+    background: #222;
+    -webkit-perspective: 600px;
+    -moz-perspective: 600px;
+    perspective: 600px;
+}
+
+.container {
+    background: #e74c3c;
+    min-height: 100%;
+}
+
+.md-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    max-width: 630px;
+    min-width: 300px;
+    height: auto;
+    z-index: 2000;
+    visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.md-show {
+    visibility: visible;
+}
+
+.md-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    background: rgba(0,0,0,.6);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.preLoad {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: visible;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    background: #45a176;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.md-show ~ .md-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Content styles */
+.md-content {
+    background: #fff;
+    position: relative;
+    border-radius: 3px;
+    margin: 0 auto;
+}
+
+.md-content h3 {
+    margin: 0;
+    padding: 0.2em;
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: 300;
+    opacity: 0.8;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px 3px 0 0;
+}
+
+.md-content > div {
+    padding: 15px 15px 12px;
+    margin: 0;
+    font-weight: 300;
+}
+
+.md-content > div p {
+    margin: 0;
+    padding: 10px 0;
+}
+
+.md-content > div ul {
+    margin: 0;
+    padding: 0 0 30px 20px;
+}
+
+.md-content > div ul li {
+    padding: 5px 0;
+}
+
+.md-content button {
+    display: block;
+    margin: 0 auto;
+    font-size: 0.8em;
+}
+
+/* Effect 14:  3D Rotate from bottom */
+.md-effect-14.md-modal {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.md-effect-14 .md-content {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: translateY(100%) rotateX(90deg);
+    -moz-transform: translateY(100%) rotateX(90deg);
+    -ms-transform: translateY(100%) rotateX(90deg);
+    transform: translateY(100%) rotateX(90deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.md-show.md-effect-14 .md-content {
+    -webkit-transform: translateY(0%) rotateX(0deg);
+    -moz-transform: translateY(0%) rotateX(0deg);
+    -ms-transform: translateY(0%) rotateX(0deg);
+    transform: translateY(0%) rotateX(0deg);
+    opacity: 1;
+}
+
+.md-close {
+    border: none;
+    padding: 0.6em 1.5em;
+    background: rgb(0, 100, 0);
+    color: #fff;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-block;
+    margin: 3px 2px;
+    border-radius: 5px;
+}
+
+.md-close :hover {
+    background: #A5281B;
+}
+
+.btn {
+    text-align: center;
+    font: 16px/40px Arial, Verdana;
+    color: #fff;
+    padding: 5px 10px;
+    background: rgb(100, 100, 0);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.select{
+    border: 1px crimson solid;
+}
+
+.selectDiv {
+    border: 1px solid #bbb;
+    border-radius: 1px;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+    width: 300px;
+    background: #f3f3f3;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+    background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+}
+/* --------------  */
+/*  custom-select  */
+/* --------------  */
+.custom-select {
+    position: relative;
+}
+.custom-select select {
+    width:100%;
+    margin:0;
+    background:none;
+    border: 1px solid transparent;
+    outline: none;
+    /* Prefixed box-sizing rules necessary for older browsers */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /* Remove select styling */
+    appearance: none;
+    -webkit-appearance: none;
+    /* Font size must the 16px or larger to prevent iOS page zoom on focus */
+    /* General select styles: change as needed */
+    font-family: helvetica, sans-serif;
+    font-weight: bold;
+    color: #444;
+    padding: .6em 1.9em .5em .8em;
+    line-height:1.3;
+}
+.custom-select::after {
+    content: "";
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    top: 50%;
+    right: 8px;
+    margin-top:-4px;
+    border:8px solid #929497;
+    border-width: 8px 5px 8px;
+    border-color: #929497 transparent transparent transparent;
+    z-index: 2;
+    pointer-events:none;
+}
+/* Hover style */
+.custom-select:hover {
+    border:1px solid #888;
+}
+/* Focus style */
+.custom-select select:focus {
+    outline:none;
+    box-shadow: 0 0 1px 3px rgba(180,222,250, 1);
+    background-color:transparent;
+    color: #222;
+    border:1px solid #aaa;
+}
+/* Set options to normal weight */
+.custom-select option {
+    font-weight:normal;
+}
+x:-o-prefocus, .custom-select::after {
+    display:none;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .custom-select select::-ms-expand {
+        display: none;
+    }
+    .custom-select select:focus::-ms-value {
+        background: transparent;
+        color: #222;
+    }
+}
+@-moz-document url-prefix() {
+    .custom-select {
+        overflow: hidden;
+    }
+    .custom-select select {
+        width: 120%;
+        width: -moz-calc(100% + 3em);
+        width: calc(100% + em);
+    }
+
+}
+.custom-select select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}

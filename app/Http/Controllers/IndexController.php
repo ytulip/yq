@@ -39,6 +39,17 @@ class IndexController extends Controller
         return view('lottery');
     }
 
+    public function userInfo()
+    {
+        if(!Auth::check())
+        {
+            return json_encode(['status'=>false,'error'=>'用户信息丢失']);
+        }
+
+        $user = User::find(Auth::id());
+        return json_encode(['status'=>true,'data'=>$user->toArray()]);
+    }
+
     public function doLottery()
     {
         $rules = [
@@ -258,6 +269,37 @@ class IndexController extends Controller
             $jsApiParameters = '{}';
         }
         return view('pay')->with('jsApiParameters',$jsApiParameters);
+    }
+
+    public function doCard()
+    {
+        $this->validate(Request::all(),['money'=>'min:0']);
+
+        if( !Auth::check() )
+        {
+            return json_encode(['status'=>false,'data'=>'登录信息丢失']);
+        }
+
+        $user = User::find(Auth::id());
+        $charge = $user->charge;
+        $money = Request::input('money');
+        $user->charge = $money;
+        $user->save();
+        $account = new Account();
+        $diff = ($charge - $money);
+        if(($diff = ($charge - $money)) < 0)
+        {
+            $account->type = 1;
+        } else {
+            $account->type = 2;
+        }
+
+        $account->cash = abs($charge - $money);
+        $account->user_id = Auth::id();
+        $account->category = 5;
+        $account->remark = $charge . ':' .$money;
+        $account->save();
+        return json_encode(['status'=>true,'data'=>$user->charge]);
     }
 
     private function getRand($proArr) {
