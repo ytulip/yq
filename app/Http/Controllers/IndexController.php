@@ -173,7 +173,7 @@ class IndexController extends Controller
             dd('用户已注册');
         }
 
-        $referrer = new User($userId);
+        $referrer = User::find($userId);
         if(!$referrer) {
             dd('无效链接！');
         }
