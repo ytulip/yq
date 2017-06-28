@@ -22,6 +22,7 @@ Route::get('/loginout','IndexController@loginout');
 Route::get('/call-friend','IndexController@callFriend');
 Route::get('/charge','IndexController@charge');
 Route::get('/center','IndexController@center');
+Route::get('/myfriend','IndexController@myFriend');
 Route::get('/group','IndexController@group');
 Route::get('/makebill','IndexController@makebill');
 Route::get('/pay','IndexController@pay');
