@@ -10,6 +10,7 @@
     .weui-cells{margin-top: 0;}
     .user-list{display: none;}
     .user-list-show{display: block;}
+    .js_item{color:#000000;}
 </style>
 <body>
 <div class="weui-tab">
@@ -24,32 +25,38 @@
             三级会员({{count($further)}})
         </div>
     </div>
-    <div class="weui-tab__panel">
+    <div class="weui-tab__panel" style="background-color: #eeeeee;">
         <div class="weui-cells">
             <div class="weui-cell user-list user-list-show">
                 @foreach(\Illuminate\Support\Facades\DB::table('users')->where('parent_id',\Illuminate\Support\Facades\Auth::id())->get() as $item)
-                <div class="weui-cell__hd"></div>
-                <div class="weui-cell__bd">
-                    <p>ID:&nbsp;&nbsp;{{$item->id}}</p>
-                </div>
+                    <a class="weui-cell js_item" data-id="progress" href="javascript:;" style="background-color: #ffffff;">
+                        <div class="weui-cell__bd">
+                            <p>ID:&nbsp;&nbsp;{{Ytulip\Ycurl\Kits::padId($item->id)}}</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
                     @endforeach
             </div>
 
             <div class="weui-cell user-list">
                 @foreach(\Illuminate\Support\Facades\DB::table('users')->where('indirect_id',\Illuminate\Support\Facades\Auth::id())->get() as $item)
-                    <div class="weui-cell__hd"></div>
-                    <div class="weui-cell__bd">
-                        <p>ID:{{$item->id}}</p>
-                    </div>
+                    <a class="weui-cell js_item" data-id="progress" href="javascript:;" style="background-color: #ffffff;">
+                        <div class="weui-cell__bd">
+                            <p>ID:&nbsp;&nbsp;{{Ytulip\Ycurl\Kits::padId($item->id)}}</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
                 @endforeach
             </div>
 
             <div class="weui-cell user-list">
                 @foreach(\Illuminate\Support\Facades\DB::table('users')->where('further_id',\Illuminate\Support\Facades\Auth::id())->get() as $item)
-                    <div class="weui-cell__hd"></div>
-                    <div class="weui-cell__bd">
-                        <p>ID:{{$item->id}}</p>
-                    </div>
+                    <a class="weui-cell js_item" data-id="progress" href="javascript:;" style="background-color: #ffffff;">
+                        <div class="weui-cell__bd">
+                            <p>ID:&nbsp;&nbsp;{{Ytulip\Ycurl\Kits::padId($item->id)}}</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </a>
                 @endforeach
             </div>
         </div>

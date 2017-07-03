@@ -13,7 +13,7 @@
 <div class="container">
     <div class="weui-navbar" style="height: 44px;">
         <div class="weui-navbar__item weui-bar__item_on">
-           <p style="line-height: 44px;color: #ffffff;"><span>id:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::id()}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <p style="line-height: 44px;color: #ffffff;"><span>ID:&nbsp;&nbsp;{{\Illuminate\Support\Facades\Auth::id()}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             余额:<span id="user-charge">{{\Illuminate\Support\Facades\Auth::user()->charge}}</span>
 
             <a  style="vertical-align: middle;margin-left: 60px;" href="/charge" class="weui-btn weui-btn_mini weui-btn_warn">充值</a>

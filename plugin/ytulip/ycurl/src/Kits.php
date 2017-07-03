@@ -25,4 +25,9 @@ class Kits{
             return round($fee);
         }
     }
+
+    static public function padId($id)
+    {
+        return str_pad($id,9,0,STR_PAD_LEFT);
+    }
 }
