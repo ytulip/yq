@@ -367,6 +367,11 @@ class IndexController extends Controller
         return view('withdraw');
     }
 
+    public function setMenu()
+    {
+        WechatCallbackFacade::setMenu();
+    }
+
     private function getRand($proArr) {
         $result = '';
 

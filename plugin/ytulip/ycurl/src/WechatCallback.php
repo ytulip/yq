@@ -60,7 +60,13 @@ class WechatCallback{
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' . $this->getAccessToken();
         $data = '{
           "button":[
-          ]
+            {
+                "type": "view", 
+                "name": "去玩", 
+                "url": "http://yq.zhuyan.me/activity", 
+                "sub_button": [ ]
+            }
+        ]
         }';
         return self::curl_post($url,$data);
     }
