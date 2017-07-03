@@ -12,6 +12,7 @@ use App\Util\QrCodeCreater;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -118,7 +119,7 @@ class IndexController extends Controller
     public function wechatPayBack()
     {
 
-        Logger::info(Request::getContent());
+        Log::info(Request::getContent());
 
         $currentDatetime = date('Y-m-d H:i:s');
         //计算提成
