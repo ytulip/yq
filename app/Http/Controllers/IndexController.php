@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\WechatCallbackFacade;
+use App\Log\src\Logger;
 use App\Model\Account;
 use App\Model\Charge;
 use App\Model\LotteryConfig;
@@ -116,6 +117,8 @@ class IndexController extends Controller
      */
     public function wechatPayBack()
     {
+
+        Logger::info(Request::getContent());
 
         $currentDatetime = date('Y-m-d H:i:s');
         //计算提成
@@ -307,7 +310,7 @@ class IndexController extends Controller
             $input->SetTotal_fee(Kits::wxFee($charge->price)); //钱是以分计的
             $input->SetTime_start(date("YmdHis"));
             $input->SetGoods_tag("test");
-            $input->SetNotify_url("http://120.25.216.9:8080/shopping/order/paymentresult/manage/addByWX.action");
+            $input->SetNotify_url("http://yq.zhuyan.me/back");
             $input->SetTrade_type("JSAPI");
             $input->SetOpenid($openId);
             $order = \WxPayApi::unifiedOrder($input);

@@ -30,3 +30,4 @@ Route::get('/info','IndexController@userInfo');
 Route::post('/card-do','IndexController@doCard');
 Route::get('/withdraw','IndexController@withdraw');
 Route::post('/do-withdraw','IndexController@makeWithdraw');
+Route::post('/back','IndexController@wechatPayBack');
