@@ -120,27 +120,34 @@ class IndexController extends Controller
     {
 
         Log::info(Request::getContent());
+        $request = Request::getContent();
+        $wxObj = simplexml_load_string($request, 'SimpleXMLElement', LIBXML_NOCDATA);
 
+        if( $wxObj->result_code != "SUCCESS"){
+            return;
+        }
+
+        $tradeNo = $wxObj->out_trade_no;
         $currentDatetime = date('Y-m-d H:i:s');
         //计算提成
-        $tradeNo = Request::input('trade_no');
+        //$tradeNo = Request::input('trade_no');
         $charge = Charge::find($tradeNo);
         if($charge && $charge->status == 1)
         {
-            return;
+            return "SUCCESS";
         }
 
         $charge->status = 1;
         $charge->save();
         $user = User::find($charge->user_id);
         $user->increment('charge',$charge->price);
-        $accountArr[] = ['cash'=>$charge->price,'user_id'=>Auth::id(),'type'=>1,'category'=>1,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];;
+        $accountArr[] = ['cash'=>$charge->price,'user_id'=>Auth::id(),'type'=>1,'category'=>1,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remark'=>$charge->id];;
         if($user->parent_id)
         {
             $parent = User::find($user->parent_id);
             $parent->increment('charge',$charge->price * 0.1);
             $parent->increment('extract',$charge->price * 0.1);
-            $accountArr[] =  ['cash'=>$charge->price * 0.1,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+            $accountArr[] =  ['cash'=>$charge->price * 0.1,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remark'=>$charge->id];
         }
 
         if($user->indrect_id)
@@ -148,7 +155,7 @@ class IndexController extends Controller
             $parent = User::find($user->indrect_id);
             $parent->increment('charge',$charge->price * 0.02);
             $parent->increment('extract',$charge->price * 0.02);
-            $accountArr[] =  ['cash'=>$charge->price * 0.02,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+            $accountArr[] =  ['cash'=>$charge->price * 0.02,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remark'=>$charge->id];
         }
 
         if($user->further_id)
@@ -156,13 +163,15 @@ class IndexController extends Controller
             $parent = User::find($user->further_id);
             $parent->increment('charge',$charge->price * 0.004);
             $parent->increment('extract',$charge->price * 0.004);
-            $accountArr[] =  ['cash'=>$charge->price * 0.004,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remake'=>$charge->id];
+            $accountArr[] =  ['cash'=>$charge->price * 0.004,'user_id'=>Auth::id(),'type'=>1,'category'=>2,'created_at'=>$currentDatetime,'updated_at'=>$currentDatetime,'remark'=>$charge->id];
         }
 
         if($accountArr)
         {
             Account::insert($accountArr);
         }
+
+        return "SUCCESS";
     }
 
     public function myFriend()
