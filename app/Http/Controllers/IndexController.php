@@ -238,6 +238,53 @@ class IndexController extends Controller
         return Redirect::to('/pay?trade_no=' . $charge->id);
     }
 
+
+    public function makeWithdraw()
+    {
+        if(!Auth::check()) {
+            return json_encode(['status'=>false,'data'=>'登录信息丢失!']);
+        }
+
+        $pirce = intval(Request::input('price'));
+        if(!($pirce > 0  && (Auth::user()->charge  > $pirce) && $pirce <= 200))
+        {
+            return json_encode(['status'=>false,'data'=>'无效金额!']);
+        }
+
+        $user = User::find(Auth::id());
+        $user->decrement('charge',$pirce);
+
+        $account = new Account();
+        $account->cash = $pirce;
+        $account->type = 2;
+        $account->user_id = Auth::id();
+        $account->category = 2;
+        $account->save();
+
+        $charge = new Charge();
+        $charge->user_id = Auth::id();
+        $charge->price = $pirce;
+        $charge->type = 2;
+        $charge->save();
+
+        //TODO:发送微信红包
+
+        return json_encode(['status'=>true,'data'=>"申请提现" . $pirce]);
+
+//        if(!in_array($pirce,[5,10,50,100])){
+//            dd('无效金额');
+//        }
+//
+//        if(!Auth::check()) {
+//            dd('登录信息丢失');
+//        }
+//        $charge = new Charge();
+//        $charge->user_id = Auth::id();
+//        $charge->price = $pirce;
+//        $charge->save();
+//        return Redirect::to('/pay?trade_no=' . $charge->id);
+    }
+
     public function pay()
     {
         $tradeNo = Request::get('trade_no');
@@ -300,6 +347,11 @@ class IndexController extends Controller
         $account->remark = $charge . ':' .$money;
         $account->save();
         return json_encode(['status'=>true,'data'=>$user->charge]);
+    }
+
+    public function withdraw()
+    {
+        return view('withdraw');
     }
 
     private function getRand($proArr) {

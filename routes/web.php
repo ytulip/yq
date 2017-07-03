@@ -28,3 +28,5 @@ Route::get('/makebill','IndexController@makebill');
 Route::get('/pay','IndexController@pay');
 Route::get('/info','IndexController@userInfo');
 Route::post('/card-do','IndexController@doCard');
+Route::get('/withdraw','IndexController@withdraw');
+Route::post('/do-withdraw','IndexController@makeWithdraw');

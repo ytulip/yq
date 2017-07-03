@@ -25,8 +25,8 @@
                 提成收益<br/>
                 {{\Illuminate\Support\Facades\Auth::user()->extract}}
             </div>
-            <div class="weui-navbar__item">
-                提现<br/>
+            <div class="weui-navbar__item" onclick="location.href='/withdraw'">
+                <a>提现</a><br/>
             </div>
         </div>
     </div>
