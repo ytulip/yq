@@ -119,8 +119,8 @@
 
             $btn.rotate({
                 angle: 0,
-                //duration: 4000, //旋转时间
-                animateTo: 360, //让它根据得出来的结果加上1440度旋转
+                duration: 4000, //旋转时间
+                animateTo: 1440, //让它根据得出来的结果加上1440度旋转
                 callback: function () {
                     roateLottery();
                 }
