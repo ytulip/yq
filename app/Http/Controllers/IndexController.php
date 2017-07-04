@@ -281,6 +281,22 @@ class IndexController extends Controller
         $charge->save();
 
         //TODO:发送微信红包
+        $data = [];
+        $data['nonce_str']=WechatCallbackFacade::rand_num();
+        $data['mch_id']= env('MECHID');//商户号
+        $data['mch_billno']= $charge->id;
+        $data['wxappid']=env('WECHAT_APPID');//公众账号appid
+        $data['send_name']='匿名';
+        $data['re_openid']= $user->openid;//用户openid
+        $data['total_amount']=Kits::wxFee($charge->price);
+        $data['total_num']=1;
+        $data['wishing']='提现';
+        $data['client_ip']= env('RED_ENVELOPE_IP');
+        $data['act_name']='提现功能';
+        $data['remark']='速收';
+        $key=env('WECHAT_PAY_SECRET');
+        $data['sign'] = WechatCallbackFacade::getSign($data,$key);
+        $this->cashBonus($data);
 
         return json_encode(['status'=>true,'data'=>"申请提现" . $pirce]);
 
@@ -370,6 +386,31 @@ class IndexController extends Controller
     public function setMenu()
     {
         WechatCallbackFacade::setMenu();
+    }
+
+    //现金红包接口
+    private function cashBonus($data){
+        $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+        $xml = "<xml>
+                <sign><![CDATA[%s]]></sign>
+                <mch_billno><![CDATA[%s]]></mch_billno>
+                <mch_id><![CDATA[%s]]></mch_id>
+                <wxappid><![CDATA[%s]]></wxappid>
+                <send_name><![CDATA[%s]]></send_name>
+                <re_openid><![CDATA[%s]]></re_openid>
+                <total_amount><![CDATA[%s]]></total_amount>
+                <total_num><![CDATA[%s]]></total_num>
+                <wishing><![CDATA[%s]]></wishing>
+                <client_ip><![CDATA[%s]]></client_ip>
+                <act_name><![CDATA[%s]]></act_name>
+                <remark><![CDATA[%s]]></remark>
+                <nonce_str><![CDATA[%s]]></nonce_str>
+                </xml>";
+        $result = sprintf($xml,$data['sign'],$data['mch_billno'],$data['mch_id'],$data['wxappid'],$data['send_name'],$data['re_openid'],$data['total_amount'],$data['total_num'],$data['wishing'],$data['client_ip'],$data['act_name'],$data['remark'],$data['nonce_str']);
+        Log::info($url.'参数:'.$result);
+        $res = WechatCallbackFacade::curl_post_ssl($url,$result);
+        Log::info('响应：'.$res);
+        return $res;
     }
 
     private function getRand($proArr) {

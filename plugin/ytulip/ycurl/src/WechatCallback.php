@@ -1,5 +1,7 @@
 <?php
 namespace Ytulip\Ycurl;
+use Illuminate\Support\Facades\Log;
+
 class WechatCallback{
     //默认的token为wechat
     private $_appid = null;
@@ -25,6 +27,18 @@ class WechatCallback{
         $this->_ticket_path = $config['ticket_path'];
         $this->_appid = $config['appid'];
         $this->_appsercret = $config['appsercret'];
+    }
+
+
+    //生成32位随机数
+    public function rand_num(){
+        $str="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $key = "";
+        for($i=0;$i<32;$i++)
+        {
+            $key .= $str{mt_rand(0,60)};    //生成php随机数
+        }
+        return $key;
     }
 
 
@@ -264,6 +278,48 @@ class WechatCallback{
         }
     }
 
+
+
+    //微信支付接口
+    public function curl_post_ssl($url, $vars, $second=30,$aHeader=array())
+    {
+        $ch = curl_init();
+        //超时时间
+        curl_setopt($ch,CURLOPT_TIMEOUT,$second);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+
+        //默认格式为PEM，可以注释
+//        curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+        curl_setopt($ch,CURLOPT_SSLCERT,dirname(getcwd()).'\storage\certificate\apiclient_cert.pem');
+        curl_setopt($ch,CURLOPT_SSLKEY,dirname(getcwd()).'\storage\certificate\apiclient_key.pem');
+        curl_setopt($ch,CURLOPT_CAINFO,dirname(getcwd()).'\storage\certificate\rootca.pem');
+//        curl_setopt($ch,CURLOPT_SSLCERT,getcwd().'/all.pem');
+
+        if( count($aHeader) >= 1 ){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);
+        }
+
+        curl_setopt($ch,CURLOPT_POST, 1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$vars);
+        $data = curl_exec($ch);
+
+        Log::info($data);
+        if($data){
+            curl_close($ch);
+            return $data;
+        }
+        else {
+            $error = curl_errno($ch);
+            //echo "call faild, errorCode:".$error."\n";
+            Log::info($data);
+            curl_close($ch);
+            return false;
+        }
+    }
+
     static public function testVisit(){
         return 123;
     }
@@ -374,5 +430,21 @@ class WechatCallback{
 
         $buff = trim($buff, "&");
         return $buff;
+    }
+
+    //计算签名
+    public function getSign($data,$the_key){
+        ksort($data);
+        $stringA = '';
+        foreach($data as $key => $value){
+            if(empty($value)){
+                continue;
+            }else{
+                $stringA .= $key.'='.$value.'&';
+            }
+        }
+        $stringSignTemp = $stringA."key=".$the_key;
+        $sign = strtoupper(MD5($stringSignTemp));
+        return $sign;
     }
 }
