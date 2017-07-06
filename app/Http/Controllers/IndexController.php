@@ -294,7 +294,7 @@ class IndexController extends Controller
         $data['client_ip']= env('RED_ENVELOPE_IP');
         $data['act_name']='提现功能';
         $data['remark']='速收';
-        $key=env('WECHAT_PAY_SECRET');
+        $key=env('MECHKEY');
         $data['sign'] = WechatCallbackFacade::getSign($data,$key);
         $this->cashBonus($data);
 
