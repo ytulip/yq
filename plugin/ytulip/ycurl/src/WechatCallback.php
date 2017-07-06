@@ -293,9 +293,9 @@ class WechatCallback{
 
         //默认格式为PEM，可以注释
 //        curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
-        curl_setopt($ch,CURLOPT_SSLCERT,dirname(getcwd()).'\storage\certificate\apiclient_cert.pem');
-        curl_setopt($ch,CURLOPT_SSLKEY,dirname(getcwd()).'\storage\certificate\apiclient_key.pem');
-        curl_setopt($ch,CURLOPT_CAINFO,dirname(getcwd()).'\storage\certificate\rootca.pem');
+        curl_setopt($ch,CURLOPT_SSLCERT,storage_path() .'\certificate\apiclient_cert.pem');
+        curl_setopt($ch,CURLOPT_SSLKEY,storage_path() . '\certificate\apiclient_key.pem');
+        curl_setopt($ch,CURLOPT_CAINFO,storage_path() . '\certificate\rootca.pem');
 //        curl_setopt($ch,CURLOPT_SSLCERT,getcwd().'/all.pem');
 
         if( count($aHeader) >= 1 ){
