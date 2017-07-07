@@ -264,6 +264,8 @@ class IndexController extends Controller
             return json_encode(['status'=>false,'data'=>'无效金额!']);
         }
 
+        DB::beginTransaction();
+
         $user = User::find(Auth::id());
         $user->decrement('charge',$pirce);
 
@@ -296,9 +298,16 @@ class IndexController extends Controller
         $data['remark']='速收';
         $key=env('MECHKEY');
         $data['sign'] = WechatCallbackFacade::getSign($data,$key);
-        $this->cashBonus($data);
+        $res = $this->cashBonus($data);
+        $res = simplexml_load_string($res, 'SimpleXMLElement', LIBXML_NOCDATA);
 
-        return json_encode(['status'=>true,'data'=>"申请提现" . $pirce]);
+        if(isset($res->result_code) && $res->result_code == "SUCCESS" ) {
+            DB::commit();
+            return json_encode(['status'=>true,'data'=>"申请提现" . $pirce]);
+        } else {
+            DB::rollback();
+            return json_encode(['status'=>false,'data'=>"申请异常"]);
+        }
 
 //        if(!in_array($pirce,[5,10,50,100])){
 //            dd('无效金额');
