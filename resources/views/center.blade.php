@@ -38,9 +38,9 @@
             </div>
             <div class="weui-cell__ft"></div>
         </a>
-        <a class="weui-cell weui-cell_access js_item" data-id="progress" href="/deck/card.html" style="background-color: #ffffff;">
+        <a class="weui-cell weui-cell_access js_item" data-id="progress" href="/call-friend" style="background-color: #ffffff;">
             <div class="weui-cell__bd">
-                <p>游戏</p>
+                <p>我要推广</p>
             </div>
             <div class="weui-cell__ft"></div>
         </a>
