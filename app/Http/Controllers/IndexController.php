@@ -339,8 +339,8 @@ class IndexController extends Controller
             $tools = new \JsApiPay();
             //②、统一下单
             $input = new \WxPayUnifiedOrder();
-            $input->SetBody("test");
-            $input->SetAttach("test");
+            $input->SetBody("充值金币" . intval($charge->price) ."个");
+            $input->SetAttach("充值金币" . intval($charge->price) ."个");
             $input->SetOut_trade_no($tradeNo);//这个订单号是特殊的
             $input->SetTotal_fee(Kits::wxFee($charge->price)); //钱是以分计的
             $input->SetTime_start(date("YmdHis"));
