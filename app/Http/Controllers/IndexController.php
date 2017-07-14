@@ -103,8 +103,10 @@ class IndexController extends Controller
 
     public function login()
     {
-        Auth::loginUsingId(Request::get('id'));
-        return 123;
+        if(App::environment('local')) {
+            Auth::loginUsingId(Request::get('id'));
+            return 123;
+        }
     }
 
     public function loginout()
